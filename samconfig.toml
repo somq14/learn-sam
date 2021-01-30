@@ -1,0 +1,20 @@
+version = 0.1
+[dev]
+[dev.deploy]
+[dev.deploy.parameters]
+stack_name = "learn-sam-dev"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-vy7zad7rv34o"
+s3_prefix = "learn-sam-dev"
+region = "ap-northeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+
+[stg]
+[stg.deploy]
+[stg.deploy.parameters]
+stack_name = "learn-sam-stg"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-vy7zad7rv34o"
+s3_prefix = "learn-sam-stg"
+region = "ap-northeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
