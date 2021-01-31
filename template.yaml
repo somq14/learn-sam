@@ -20,6 +20,8 @@ Globals:
       Variables:
         DynamoDBTableName: !Sub ${DynamoDBTableName}
         DynamoDBEndpointUrl: !Sub ${DynamoDBEndpointUrl}
+    # Layers:
+    #   - !Ref BaseLayer
 
 Resources:
   DynamoDBTable:
@@ -39,6 +41,13 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 10
         WriteCapacityUnits: 10
+
+  BaseLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: layers/base_layer
+    Metadata:
+      BuildMethod: python3.8
 
   ListItemsFunction:
     # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
