@@ -5,14 +5,41 @@ Description: >
 
   Sample SAM Template for learn-sam
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Parameters:
+  DynamoDBTableName:
+    Type: String
+  DynamoDBEndpointUrl:
+    Type: String
+
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 10
     Runtime: python3.8
     Handler: app.lambda_handler
+    Environment:
+      Variables:
+        DynamoDBTableName: !Sub ${DynamoDBTableName}
+        DynamoDBEndpointUrl: !Sub ${DynamoDBEndpointUrl}
 
 Resources:
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${DynamoDBTableName}
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 10
+        WriteCapacityUnits: 10
+
   ListItemsFunction:
     # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Type: AWS::Serverless::Function
@@ -24,6 +51,9 @@ Resources:
           Properties:
             Path: /items
             Method: get
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub ${DynamoDBTableName}
 
   GetItemFunction:
     Type: AWS::Serverless::Function
@@ -35,3 +65,6 @@ Resources:
           Properties:
             Path: /items/{item_id}
             Method: get
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub ${DynamoDBTableName}

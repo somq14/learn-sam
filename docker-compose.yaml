@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    command: -jar DynamoDBLocal.jar -sharedDb
+    ports:
+      - 8000:8000
+    volumes:
+      - dynamodb:/home/dynamodblocal
+
+volumes:
+  dynamodb:
+    driver: local
+
+networks:
+  default:
+    name: learn-sam
+    driver: bridge
