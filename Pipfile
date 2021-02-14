@@ -10,7 +10,6 @@ boto3 = "*"
 black = "*"
 flake8 = "*"
 mypy = "*"
-boto3-stubs = {extras = ["dynamodb"], version = "*"}
 cfn-lint = "*"
 
 [requires]
@@ -18,3 +17,6 @@ python_version = "3.8"
 
 [pipenv]
 allow_prereleases = true
+
+[dev-packages.boto3-stubs]
+extras = [ "dynamodb",]

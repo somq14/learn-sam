@@ -1,4 +1,9 @@
 {
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
   "python.venvPath": ".venv",
   "python.languageServer": "Pylance",
   "python.formatting.provider": "black",
