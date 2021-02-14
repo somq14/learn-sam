@@ -11,6 +11,7 @@ black = "*"
 flake8 = "*"
 mypy = "*"
 boto3-stubs = {extras = ["dynamodb"], version = "*"}
+cfn-lint = "*"
 
 [requires]
 python_version = "3.8"

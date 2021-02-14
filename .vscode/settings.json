@@ -11,5 +11,6 @@
   "python.linting.mypyEnabled": true,
   "python.linting.mypyArgs": [
     "--strict"
-  ]
+  ],
+  "cfnLint.path": ".venv/bin/cfn-lint"
 }
