@@ -1,19 +1,11 @@
 import json
-import os
 from typing import Any, Dict
 
-import boto3
-
-dynamoEndpointUrl = os.getenv("DynamoDBEndpointUrl")
-dynamoTableName = os.getenv("DynamoDBTableName")
-if dynamoEndpointUrl is None or dynamoTableName is None:
-    raise Exception("error")
-
-dynamodb = boto3.resource("dynamodb", endpoint_url=dynamoEndpointUrl)
-table = dynamodb.Table(dynamoTableName)
+import common.dynamodb
 
 
 def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
+    table = common.dynamodb.get_table()
     item_id = event["pathParameters"]["item_id"]
 
     try:
