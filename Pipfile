@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+boto3 = "*"
+
+[dev-packages]
+black = "*"
+flake8 = "*"
+mypy = "*"
+boto3-stubs = {extras = ["dynamodb"], version = "*"}
+
+[requires]
+python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true

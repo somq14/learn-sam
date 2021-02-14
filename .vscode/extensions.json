@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "streetsidesoftware.code-spell-checker",
+
+    // Python
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+
+    // CloudFormation and SAM
+    "kddejong.vscode-cfn-lint",
+    "redhat.vscode-yaml",
+    "bungcip.better-toml"
+  ]
+}
