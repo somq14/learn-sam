@@ -45,7 +45,7 @@ Resources:
   BaseLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      ContentUri: layers/base_layer
+      ContentUri: src/layers/base_layer
     Metadata:
       BuildMethod: python3.8
 
@@ -53,7 +53,7 @@ Resources:
     # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: apis/items/list_items
+      CodeUri: src/apis/items/list_items
       Events:
         ApiGatewayIntegration:
           Type: Api
@@ -67,7 +67,7 @@ Resources:
   GetItemFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: apis/items/get_item
+      CodeUri: src/apis/items/get_item
       Events:
         ApiGatewayIntegration:
           Type: Api

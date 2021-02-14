@@ -1,21 +1,13 @@
 import json
-import os
 from typing import Any, Dict
 
-import boto3
+import common.dynamodb
 from boto3.dynamodb.conditions import Attr
-
-dynamoEndpointUrl = os.getenv("DynamoDBEndpointUrl")
-dynamoTableName = os.getenv("DynamoDBTableName")
-if dynamoEndpointUrl is None or dynamoTableName is None:
-    raise Exception("error")
-
-dynamodb = boto3.resource("dynamodb", endpoint_url=dynamoEndpointUrl)
-table = dynamodb.Table(dynamoTableName)
 
 
 def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     try:
+        table = common.dynamodb.get_table()
         res = table.scan(Limit=100, FilterExpression=Attr("title").exists())
 
         items = list(
