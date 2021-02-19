@@ -20,8 +20,8 @@ Globals:
       Variables:
         DynamoDBTableName: !Sub ${DynamoDBTableName}
         DynamoDBEndpointUrl: !Sub ${DynamoDBEndpointUrl}
-    # Layers:
-    #   - !Ref BaseLayer
+    Layers:
+      - !Ref BaseLayer
 
 Resources:
   DynamoDBTable:
