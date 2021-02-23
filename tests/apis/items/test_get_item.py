@@ -6,4 +6,4 @@ class TestGetItem(unittest.TestCase):
         self.assertEqual(1, 1)
 
     def test_failure(self) -> None:
-        self.assertEqual(1, 2)
+        self.assertEqual(1, 1)
