@@ -1,47 +1,25 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  learn-sam
-
-  Sample SAM Template for learn-sam
 
 Parameters:
-  DynamoDBTableName:
-    Type: String
   DynamoDBEndpointUrl:
+    Type: String
+  DynamoDBTableNameSuffix:
     Type: String
 
 Globals:
   Function:
     Timeout: 10
     Runtime: python3.8
-    Handler: app.lambda_handler
+    Handler: app.lambda_handler.lambda_handler
     Environment:
       Variables:
-        DynamoDBTableName: !Sub ${DynamoDBTableName}
         DynamoDBEndpointUrl: !Sub ${DynamoDBEndpointUrl}
+        DynamoDBTableNameSuffix: !Sub ${DynamoDBTableNameSuffix}
     Layers:
       - !Ref BaseLayer
 
 Resources:
-  DynamoDBTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: !Sub ${DynamoDBTableName}
-      AttributeDefinitions:
-        - AttributeName: PK
-          AttributeType: S
-        - AttributeName: SK
-          AttributeType: S
-      KeySchema:
-        - AttributeName: PK
-          KeyType: HASH
-        - AttributeName: SK
-          KeyType: RANGE
-      ProvisionedThroughput:
-        ReadCapacityUnits: 10
-        WriteCapacityUnits: 10
-
   BaseLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -60,9 +38,6 @@ Resources:
           Properties:
             Path: /items
             Method: get
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Sub ${DynamoDBTableName}
 
   GetItemFunction:
     Type: AWS::Serverless::Function
@@ -74,9 +49,6 @@ Resources:
           Properties:
             Path: /items/{item_id}
             Method: get
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Sub ${DynamoDBTableName}
 
   LoginFunction:
     Type: AWS::Serverless::Function
@@ -90,4 +62,6 @@ Resources:
             Method: post
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Sub ${DynamoDBTableName}
+            TableName: !Sub User${DynamoDBTableNameSuffix}
+        - DynamoDBCrudPolicy:
+            TableName: !Sub Session${DynamoDBTableNameSuffix}

@@ -5,7 +5,7 @@ version = 0.1
 [default.local_start_api.parameters]
 port = 8080
 parameter_overrides = """
-  DynamoDBTableName=DynamoDBTable \
+  DynamoDBTableNameSuffix=-local \
   DynamoDBEndpointUrl=http://dynamodb:8000 \
 """
 
@@ -19,20 +19,6 @@ region = "ap-northeast-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = """
-  DynamoDBTableName=learn-sam-dev-DynamoDBTable \
-  DynamoDBEndpointUrl=https://dynamodb.ap-northeast-1.amazonaws.com \
-"""
-
-[stg]
-[stg.deploy]
-[stg.deploy.parameters]
-stack_name = "learn-sam-stg"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-vy7zad7rv34o"
-s3_prefix = "learn-sam-stg"
-region = "ap-northeast-1"
-confirm_changeset = true
-capabilities = "CAPABILITY_IAM"
-parameter_overrides = """
-  DynamoDBTableName=learn-sam-stg-DynamoDBTable \
+  DynamoDBTableNameSuffix=-dev \
   DynamoDBEndpointUrl=https://dynamodb.ap-northeast-1.amazonaws.com \
 """
