@@ -14,8 +14,8 @@ Globals:
     Handler: app.lambda_handler.lambda_handler
     Environment:
       Variables:
-        DynamoDBEndpointUrl: !Sub ${DynamoDBEndpointUrl}
-        DynamoDBTableNameSuffix: !Sub ${DynamoDBTableNameSuffix}
+        DYNAMODB_ENDPOINT_URL: !Sub ${DynamoDBEndpointUrl}
+        DYNAMODB_TABLE_NAME_SUFFIX: !Sub ${DynamoDBTableNameSuffix}
     Layers:
       - !Ref BaseLayer
 

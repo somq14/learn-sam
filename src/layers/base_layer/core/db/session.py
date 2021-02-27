@@ -2,8 +2,8 @@ import datetime
 import typing
 
 import cerberus  # type: ignore
-import core.datetime_util
-import core.dynamodb
+import core.db.dynamodb
+import core.util.datetime_util
 
 
 class Session(typing.TypedDict):
@@ -13,11 +13,11 @@ class Session(typing.TypedDict):
     expires_at: datetime.datetime
 
 
-def connect_table(dynamodb: core.dynamodb.DynamoDB) -> core.dynamodb.Table:
-    return core.dynamodb.connect_table(dynamodb, "Session")
+def connect_table(dynamodb: core.db.dynamodb.DynamoDB) -> core.db.dynamodb.Table:
+    return core.db.dynamodb.connect_table(dynamodb, "Session")
 
 
-def from_item(item: core.dynamodb.Item) -> Session:
+def from_item(item: core.db.dynamodb.Item) -> Session:
     v = cerberus.Validator(
         {
             "SessionId": {"type": "string", "required": True, "rename": "session_id"},
@@ -28,13 +28,13 @@ def from_item(item: core.dynamodb.Item) -> Session:
             },
             "AuthenticatedAt": {
                 "type": "datetime",
-                "coerce": core.datetime_util.parse,
+                "coerce": core.util.datetime_util.parse,
                 "required": True,
                 "rename": "authenticated_at",
             },
             "ExpiresAt": {
                 "type": "string",
-                "coerce": core.datetime_util.parse,
+                "coerce": core.util.datetime_util.parse,
                 "required": True,
             },
         }
@@ -46,10 +46,10 @@ def from_item(item: core.dynamodb.Item) -> Session:
     return typing.cast(Session, session)
 
 
-def to_item(session: Session) -> core.dynamodb.Item:
+def to_item(session: Session) -> core.db.dynamodb.Item:
     return {
         "SessionId": session["session_id"],
         "UserId": session["user_id"],
-        "AuthenticatedAt": core.datetime_util.format(session["authenticated_at"]),
-        "ExpiresAt": core.datetime_util.format(session["expires_at"]),
+        "AuthenticatedAt": core.util.datetime_util.format(session["authenticated_at"]),
+        "ExpiresAt": core.util.datetime_util.format(session["expires_at"]),
     }

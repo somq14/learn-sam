@@ -4,6 +4,7 @@ version = 0.1
 [default.local_start_api]
 [default.local_start_api.parameters]
 port = 8080
+docker_network="learn-sam"
 parameter_overrides = """
   DynamoDBTableNameSuffix=-local \
   DynamoDBEndpointUrl=http://dynamodb:8000 \

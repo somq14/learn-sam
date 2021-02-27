@@ -1,7 +1,7 @@
 import typing
 
 import cerberus  # type: ignore
-import core.dynamodb
+import core.db.dynamodb
 
 
 class User(typing.TypedDict):
@@ -10,11 +10,11 @@ class User(typing.TypedDict):
     hashed_password: str
 
 
-def connect_table(dynamodb: core.dynamodb.DynamoDB) -> core.dynamodb.Table:
-    return core.dynamodb.connect_table(dynamodb, "User")
+def connect_table(dynamodb: core.db.dynamodb.DynamoDB) -> core.db.dynamodb.Table:
+    return core.db.dynamodb.connect_table(dynamodb, "User")
 
 
-def from_item(item: core.dynamodb.Item) -> User:
+def from_item(item: core.db.dynamodb.Item) -> User:
     v = cerberus.Validator(
         {
             "UserId": {"type": "string", "required": True, "rename": "user_id"},
@@ -34,7 +34,7 @@ def from_item(item: core.dynamodb.Item) -> User:
     return typing.cast(User, user)
 
 
-def to_item(user: User) -> core.dynamodb.Item:
+def to_item(user: User) -> core.db.dynamodb.Item:
     return {
         "UserId": user["user_id"],
         "UserName": user["user_name"],

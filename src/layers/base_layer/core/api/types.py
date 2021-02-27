@@ -1,5 +1,4 @@
-import typing
-from typing import Any, Dict, List
+from typing import Any, Callable, Dict, List, Optional, TypedDict
 
 
 class Context:
@@ -10,7 +9,7 @@ class Context:
     pass
 
 
-class ApiGatewayLambdaEvent(typing.TypedDict):
+class Event(TypedDict):
     """
     https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
     """
@@ -25,11 +24,11 @@ class ApiGatewayLambdaEvent(typing.TypedDict):
     pathParameters: Dict[str, str]
     stageVariables: Dict[str, str]
     requestContext: Dict[str, Any]
-    body: str
+    body: Optional[str]
     isBase64Encoded: bool
 
 
-class ApiGatewayLambdaResponse(typing.TypedDict, total=False):
+class Response(TypedDict, total=False):
     """
     https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#apigateway-multivalue-headers-and-parameters
     """
@@ -41,10 +40,6 @@ class ApiGatewayLambdaResponse(typing.TypedDict, total=False):
     body: str
 
 
-ApiGatewayLambdaHandler = typing.Callable[
-    [ApiGatewayLambdaEvent, Context], ApiGatewayLambdaResponse
-]
+Handler = Callable[[Event, Context], Response]
 
-T = typing.TypeVar("T")
-Decorator = typing.Callable[[T], T]
-LambdaHandlerDecorator = Decorator[ApiGatewayLambdaHandler]
+HandlerDecorator = Callable[[Handler], Handler]
