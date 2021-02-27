@@ -15,7 +15,7 @@ def connect_table(dynamodb: core.dynamodb.DynamoDB) -> core.dynamodb.Table:
 
 
 def from_item(item: core.dynamodb.Item) -> User:
-    validator = cerberus.Validator(
+    v = cerberus.Validator(
         {
             "UserId": {"type": "string", "required": True, "rename": "user_id"},
             "UserName": {"type": "string", "required": True, "rename": "user_name"},
@@ -27,9 +27,9 @@ def from_item(item: core.dynamodb.Item) -> User:
         }
     )
 
-    user = validator.validated(item)
-    if user is not None:
-        raise Exception()
+    user = v.validated(item)
+    if user is None:
+        raise ValueError(v.errors)
 
     return typing.cast(User, user)
 

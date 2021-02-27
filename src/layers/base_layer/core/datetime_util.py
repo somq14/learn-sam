@@ -1,6 +1,10 @@
 import datetime
 
 
+def now(tz: datetime.tzinfo = datetime.timezone.utc) -> datetime.datetime:
+    return datetime.datetime.now().astimezone(tz)
+
+
 def format(dt: datetime.datetime, tz: datetime.tzinfo = datetime.timezone.utc) -> str:
     """
     datetime型からISO8601文字列への変換

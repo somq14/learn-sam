@@ -10,15 +10,7 @@ class Session(typing.TypedDict):
     session_id: str
     user_id: str
     authenticated_at: datetime.datetime
-    expire_at: datetime.datetime
-
-
-schema = {
-    "session": {"type": "string", "required": True},
-    "user_id": {"type": "string", "required": True},
-    "authenticated_at": {"type": "datetime", "required": True},
-    "expire_at": {"type": "datetime", "required": True},
-}
+    expires_at: datetime.datetime
 
 
 def connect_table(dynamodb: core.dynamodb.DynamoDB) -> core.dynamodb.Table:
@@ -26,16 +18,30 @@ def connect_table(dynamodb: core.dynamodb.DynamoDB) -> core.dynamodb.Table:
 
 
 def from_item(item: core.dynamodb.Item) -> Session:
-    session = {
-        "session_id": item.get(""),
-        "user_id": item.get("UserId"),
-        "authenticated_at": item.get("AuthenticatedAt"),
-        "expire_at": item.get("ExpireAt"),
-    }
-
-    validator = cerberus.Validator(schema)
-    if not validator.validate():
-        raise Exception()
+    v = cerberus.Validator(
+        {
+            "SessionId": {"type": "string", "required": True, "rename": "session_id"},
+            "UserId": {
+                "type": "string",
+                "required": True,
+                "rename": "user_id",
+            },
+            "AuthenticatedAt": {
+                "type": "datetime",
+                "coerce": core.datetime_util.parse,
+                "required": True,
+                "rename": "authenticated_at",
+            },
+            "ExpiresAt": {
+                "type": "string",
+                "coerce": core.datetime_util.parse,
+                "required": True,
+            },
+        }
+    )
+    session = v.validated(item)
+    if session is None:
+        raise ValueError(v.errors)
 
     return typing.cast(Session, session)
 
@@ -45,5 +51,5 @@ def to_item(session: Session) -> core.dynamodb.Item:
         "SessionId": session["session_id"],
         "UserId": session["user_id"],
         "AuthenticatedAt": core.datetime_util.format(session["authenticated_at"]),
-        "ExpireAt": core.datetime_util.format(session["expire_at"]),
+        "ExpiresAt": core.datetime_util.format(session["expires_at"]),
     }
