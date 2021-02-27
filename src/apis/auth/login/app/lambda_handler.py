@@ -16,7 +16,7 @@ class ResponseBody(TypedDict):
     userName: str
 
 
-@core.api.default_interceptor()
+@core.api.default_interceptor(access_control_allow_origin="http://localhost:3000")
 def lambda_handler(
     event: core.api.Event,
     context: core.api.Context,
