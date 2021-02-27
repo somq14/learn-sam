@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    command: -jar DynamoDBLocal.jar -sharedDb
+    ports:
+      - 8000:8000
+    volumes:
+      - /home/dynamodblocal
+
+  init-dynamodb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python init_table.py
+    volumes:
+      - .:/home/python
+    environment:
+      AWS_DEFAULT_REGION: DUMMY
+      AWS_ACCESS_KEY_ID: DUMMY
+      AWS_SECRET_ACCESS_KEY: DUMMY
+    depends_on:
+      - dynamodb
+
+networks:
+  default:
+    name: learn-sam
+    driver: bridge
