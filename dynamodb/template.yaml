@@ -8,28 +8,44 @@ Parameters:
 Resources:
   UserTable:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
     Properties:
       TableName: !Sub User${DynamoDBTableNameSuffix}
       AttributeDefinitions:
-        - AttributeName: user_id
+        - AttributeName: UserId
           AttributeType: S
       KeySchema:
-        - AttributeName: user_id
+        - AttributeName: UserId
           KeyType: HASH
       BillingMode: PAY_PER_REQUEST
 
   SessionTable:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
     Properties:
       TableName: !Sub Session${DynamoDBTableNameSuffix}
       AttributeDefinitions:
-        - AttributeName: session_id
+        - AttributeName: SessionId
           AttributeType: S
       KeySchema:
-        - AttributeName: session_id
+        - AttributeName: SessionId
           KeyType: HASH
       BillingMode: PAY_PER_REQUEST
+    DependsOn:
+      - UserTable
+
+  ItemTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub Item${DynamoDBTableNameSuffix}
+      AttributeDefinitions:
+        - AttributeName: UserId
+          AttributeType: S
+        - AttributeName: CreatedAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: UserId
+          KeyType: HASH
+        - AttributeName: CreatedAt
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+    DependsOn:
+      - SessionTable

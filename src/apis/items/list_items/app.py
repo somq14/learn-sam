@@ -1,13 +1,14 @@
 import json
 from typing import Any, Dict
 
-import common.dynamodb
+import core.db.dynamodb
 from boto3.dynamodb.conditions import Attr
+
+dynamodb = core.db.dynamodb.connect_table()
 
 
 def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     try:
-        table = common.dynamodb.get_table()
         res = table.scan(Limit=100, FilterExpression=Attr("title").exists())
 
         items = list(

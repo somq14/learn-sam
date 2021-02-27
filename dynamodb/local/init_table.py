@@ -41,3 +41,28 @@ dynamodb.create_table(
     ],
     BillingMode="PAY_PER_REQUEST",
 )
+
+dynamodb.create_table(
+    TableName="Item" + table_name_suffix,
+    AttributeDefinitions=[
+        {
+            "AttributeName": "UserId",
+            "AttributeType": "S",
+        },
+        {
+            "AttributeName": "CreatedAt",
+            "AttributeType": "S",
+        },
+    ],
+    KeySchema=[
+        {
+            "AttributeName": "UserId",
+            "KeyType": "HASH",
+        },
+        {
+            "AttributeName": "CreatedAt",
+            "KeyType": "RANGE",
+        },
+    ],
+    BillingMode="PAY_PER_REQUEST",
+)
