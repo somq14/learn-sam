@@ -1,7 +1,7 @@
 from .decorator import default_interceptor
 from .error import ApiError
 from .types import Context, Event, Handler, HandlerDecorator, Response
-from .util import decode_request_body
+from .util import decode_query_parameter, decode_request_body
 
 __all__ = [
     "default_interceptor",
@@ -11,5 +11,6 @@ __all__ = [
     "Handler",
     "HandlerDecorator",
     "Response",
+    "decode_query_parameter",
     "decode_request_body",
 ]

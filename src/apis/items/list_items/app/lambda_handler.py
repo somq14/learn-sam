@@ -19,9 +19,11 @@ class RequestParam(TypedDict):
 def lambda_handler(
     event: core.api.Event, context: core.api.Context
 ) -> core.api.Response:
-    print(event)
 
-    event["queryStringParameters"]
+    core.api.decode_query_parameter(
+        event["queryStringParameters"],
+        {"userId": {"type": "string"}, "exclusiveStartKey": {"type": "string"}},
+    )
 
     res = item_table.scan()
 
